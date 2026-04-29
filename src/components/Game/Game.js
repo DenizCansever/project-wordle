@@ -4,6 +4,7 @@ import { sample } from '../../utils';
 import { WORDS } from '../../data';
 import GuessInput from '../GuessInput';
 import GuessResult from '../GuessResult';
+import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -16,7 +17,7 @@ function Game() {
   function handleSubmitGuess(tentativeGuess) {
     const nextGuessList = [
       ...guessList,
-      { label: tentativeGuess, value: crypto.randomUUID() },
+      { label: [...tentativeGuess], value: crypto.randomUUID() },
     ];
 
     setGuessList(nextGuessList);
@@ -24,7 +25,10 @@ function Game() {
   return (
     <>
       <GuessResult guessList={guessList} />
-      <GuessInput handleSubmitGuess={handleSubmitGuess} />
+      <GuessInput
+        handleSubmitGuess={handleSubmitGuess}
+        isDisabled={guessList?.length >= NUM_OF_GUESSES_ALLOWED}
+      />
     </>
   );
 }
