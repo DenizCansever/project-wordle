@@ -13,7 +13,9 @@ function GuessInput({ isDisabled = false, handleSubmitGuess }) {
     event.preventDefault();
     handleSubmitGuess(tentativeGuess);
     setTentativeGuess('');
-    inputRef.current?.blur();
+    if ('ontouchstart' in window) {
+      inputRef.current?.blur();
+    }
   }
 
   return (

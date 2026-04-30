@@ -9,14 +9,17 @@ import { checkGuess } from '../../game-helpers';
 import WonBanner from '../WonBanner';
 import LostBanner from '../LostBanner';
 
-// Pick a random word on every pageload.
-const answer = sample(WORDS);
-// To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
-
 function Game() {
+  const [answer, setAnswer] = React.useState(() => sample(WORDS));
   const [guessList, setGuessList] = React.useState([]);
   const [gameStatus, setGameStatus] = React.useState('ongoing');
+
+  console.log(answer);
+  function handleReset() {
+    setAnswer(sample(WORDS));
+    setGuessList([]);
+    setGameStatus('ongoing');
+  }
 
   function handleSubmitGuess(tentativeGuess) {
     const nextGuessList = [
@@ -47,9 +50,14 @@ function Game() {
         isDisabled={gameStatus !== 'ongoing'}
       />
       {gameStatus === 'won' && (
-        <WonBanner numOfGuesses={guessList.length} />
+        <WonBanner
+          numOfGuesses={guessList.length}
+          onReset={handleReset}
+        />
       )}
-      {gameStatus === 'lost' && <LostBanner answer={answer} />}
+      {gameStatus === 'lost' && (
+        <LostBanner answer={answer} onReset={handleReset} />
+      )}
     </>
   );
 }
