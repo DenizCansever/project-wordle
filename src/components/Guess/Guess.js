@@ -7,11 +7,17 @@ function Guess({ value = [] }) {
 
   return (
     <p className='guess'>
-      {numOfCols.map((numCol) => (
-        <span key={numCol} className='cell'>
-          {value[numCol]}
-        </span>
-      ))}
+      {numOfCols.map((numCol) => {
+        const cellClassName = value[numCol]?.status
+          ? `cell ${value[numCol]?.status}`
+          : 'cell';
+
+        return (
+          <span key={numCol} className={cellClassName}>
+            {value[numCol]?.letter}
+          </span>
+        );
+      })}
     </p>
   );
 }
