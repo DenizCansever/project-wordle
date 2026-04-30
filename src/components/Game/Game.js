@@ -6,7 +6,8 @@ import GuessInput from '../GuessInput';
 import GuessResult from '../GuessResult';
 import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 import { checkGuess } from '../../game-helpers';
-import Banner from '../Banner';
+import WonBanner from '../WonBanner';
+import LostBanner from '../LostBanner';
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -34,7 +35,7 @@ function Game() {
     }
 
     if (nextGuessList.length >= NUM_OF_GUESSES_ALLOWED) {
-      setGameStatus('lose');
+      setGameStatus('lost');
     }
   }
 
@@ -45,13 +46,10 @@ function Game() {
         handleSubmitGuess={handleSubmitGuess}
         isDisabled={gameStatus !== 'ongoing'}
       />
-      {gameStatus !== 'ongoing' && (
-        <Banner
-          gameStatus={gameStatus}
-          answer={answer}
-          numOfGuesses={guessList.length}
-        />
+      {gameStatus === 'won' && (
+        <WonBanner numOfGuesses={guessList.length} />
       )}
+      {gameStatus === 'lost' && <LostBanner answer={answer} />}
     </>
   );
 }
